@@ -1,76 +1,77 @@
 import streamlit as st
 
-# Seitenkonfiguration
 st.set_page_config(
-    page_title="KI-Agent für Unternehmen",
-    layout="wide",
-    page_icon="🤖"
+    page_title="HelloFresh AI-Agent",
+    page_icon="🥬",
+    layout="centered"
 )
 
-# Überschrift und Einleitung
-st.markdown("# 🧠 KI-Agent für Unternehmen")
-st.markdown("### Lebenslauf-Analyse – Kundenservice – Versicherungssupport")
+# Stil: HelloFresh Farben
+st.markdown(
+    """
+    <style>
+    body {
+        background-color: #ffffff;
+    }
+    .main {
+        background-color: #e8f5e9;
+        padding: 2rem;
+        border-radius: 10px;
+    }
+    h1 {
+        color: #66bb6a;
+        text-align: center;
+        font-size: 2.5rem;
+        font-family: 'Arial', sans-serif;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Logo oben
+st.markdown(
+    """
+    <div style='text-align: center; margin-bottom: 20px;'>
+        <img src='logo.png' width='200'/>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# Titel & Beschreibung
+st.markdown("<h1>Dein intelligenter HelloFresh Support-Agent</h1>", unsafe_allow_html=True)
+
+st.markdown(
+    """
+    <p style='font-size: 1.2rem; text-align: center; color: #2e7d32;'>
+        Fragen zu Rezepten, Lieferungen oder Bestellungen? Gib einfach dein Anliegen ein – unser intelligenter Assistent kümmert sich darum.
+    </p>
+    """,
+    unsafe_allow_html=True
+)
+
+# Eingabe mit Dummy-Antwort
+user_input = st.text_input("Deine Frage")
+
+if user_input:
+    antwort = f"Dies ist eine Beispielantwort auf: '{user_input}'"
+    st.markdown(f"<p style='color: #1b5e20; font-size: 1.1rem;'>{antwort}</p>", unsafe_allow_html=True)
+
+# Bestellbereich – NEU
 st.markdown("---")
+st.subheader("🛒 Direktbestellung")
 
-# Stil-Anpassung (optional)
-st.markdown("""
-<style>
-textarea {
-    font-size: 16px !important;
-}
-</style>
-""", unsafe_allow_html=True)
+name = st.text_input("Name")
+adresse = st.text_input("Lieferadresse")
+gericht = st.selectbox(
+    "Wähle ein Gericht für nächste Woche:",
+    ["Pasta Basilikum", "Thai Curry", "Quinoa Bowl", "Hähnchen Teriyaki", "Veganer Burger"]
+)
+anzahl = st.number_input("Portionen", min_value=1, max_value=10, step=1)
 
-# Eingabebereich in Spalten
-col1, col2 = st.columns([1, 2])
-
-with col1:
-    modus = st.selectbox("📂 Modus test wählen", [
-        "Lebenslauf analysieren",
-        "Support-Anfrage",
-        "Versicherungskunde"
-    ])
-
-with col2:
-    eingabe = st.text_area("✍️ Text eingeben", height=200)
-
-# Analyse-Funktionen
-def analyze_cv(text):
-    keywords = [
-        "python", "data", "machine learning", "sales", "customer", "project",
-        "leadership", "excel", "communication", "team", "sql", "crm", "presentation", "analysis"
-    ]
-    score = sum(1 for word in keywords if word in text.lower())
-    feedback = "Geeigneter Kandidat ✅" if score >= 3 else "Unzureichende Qualifikationen ❌"
-    return f"Score: {score}/15 – {feedback}"
-
-def handle_support_request(message):
-    if "lieferung" in message.lower():
-        return "📦 Lieferung in 1–3 Werktagen."
-    elif "retoure" in message.lower():
-        return "↩️ Retoure über Kundenportal anmelden."
-    elif "produkt" in message.lower():
-        return "🔎 Bitte geben Sie das Produkt an."
+if st.button("Bestellung abschicken"):
+    if name and adresse:
+        st.success(f"Bestellung erfolgreich aufgegeben! 🎉\n\n{name}, du erhältst '{gericht}' ({anzahl}x) an '{adresse}'.")
     else:
-        return "📨 Anfrage wird weitergeleitet."
-
-def handle_insurance_claim(message):
-    if "unfall" in message.lower() or "schaden" in message.lower():
-        return "📝 Bitte Schadensformular ausfüllen. Ein Sachbearbeiter meldet sich."
-    elif "versicherung" in message.lower():
-        return "🔐 Welche Versicherung interessiert Sie?"
-    else:
-        return "📄 Wir analysieren Ihre Anfrage."
-
-# Antwort generieren
-if st.button("🚀 Antwort generieren"):
-    if eingabe.strip() == "":
-        st.warning("⚠️ Bitte Text eingeben.")
-    else:
-        if modus == "Lebenslauf analysieren":
-            result = analyze_cv(eingabe)
-        elif modus == "Support-Anfrage":
-            result = handle_support_request(eingabe)
-        elif modus == "Versicherungskunde":
-            result = handle_insurance_claim(eingabe)
-        st.success(f"💬 Antwort: {result}")
+        st.error("Bitte Name und Adresse eingeben.")
