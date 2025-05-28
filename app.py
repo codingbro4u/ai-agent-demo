@@ -1,10 +1,15 @@
 import streamlit as st
+from PIL import Image
 
 st.set_page_config(
     page_title="HelloFresh AI-Agent",
     page_icon="🥬",
     layout="centered"
 )
+
+# Logo einbinden
+logo = Image.open("logo.png.png")
+st.image(logo, width=200)
 
 # Stil: HelloFresh Farben
 st.markdown(
@@ -25,16 +30,6 @@ st.markdown(
         font-family: 'Arial', sans-serif;
     }
     </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# Logo oben
-st.markdown(
-    """
-    <div style='text-align: center; margin-bottom: 20px;'>
-        <img src='logo.png' width='200'/>
-    </div>
     """,
     unsafe_allow_html=True
 )
