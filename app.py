@@ -1,72 +1,43 @@
 import streamlit as st
-from PIL import Image
 
-st.set_page_config(
-    page_title="HelloFresh AI-Agent",
-    page_icon="🥬",
-    layout="centered"
-)
+st.set_page_config(page_title="GastroBot", page_icon="🍽️", layout="centered")
 
-# Logo einbinden
-logo = Image.open("logo.png.png")
-st.image(logo, width=200)
-
-# Stil: HelloFresh Farben
 st.markdown(
     """
     <style>
-    body {
-        background-color: #ffffff;
-    }
     .main {
-        background-color: #e8f5e9;
+        background-color: #f7fff7;
         padding: 2rem;
         border-radius: 10px;
+        font-family: Arial, sans-serif;
     }
     h1 {
-        color: #66bb6a;
+        color: #2e7d32;
         text-align: center;
-        font-size: 2.5rem;
-        font-family: 'Arial', sans-serif;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Titel & Beschreibung
-st.markdown("<h1>Dein intelligenter HelloFresh Support-Agent</h1>", unsafe_allow_html=True)
+st.markdown("<h1>🍽️ GastroBot – Dein digitaler Gastro-Assistent</h1>", unsafe_allow_html=True)
 
-st.markdown(
-    """
-    <p style='font-size: 1.2rem; text-align: center; color: #2e7d32;'>
-        Fragen zu Rezepten, Lieferungen oder Bestellungen? Gib einfach dein Anliegen ein – unser intelligenter Assistent kümmert sich darum.
-    </p>
-    """,
-    unsafe_allow_html=True
-)
+st.markdown("### 🤖 Fragen zum Angebot?")
+frage = st.text_input("Was möchtest du wissen?")
 
-# Eingabe mit Dummy-Antwort
-user_input = st.text_input("Deine Frage")
+if frage:
+    st.markdown(f"**Antwort:** Unsere KI bearbeitet: *'{frage}'* – (echte Logik wird hier später ergänzt)")
 
-if user_input:
-    antwort = f"Dies ist eine Beispielantwort auf: '{user_input}'"
-    st.markdown(f"<p style='color: #1b5e20; font-size: 1.1rem;'>{antwort}</p>", unsafe_allow_html=True)
-
-# Bestellbereich – NEU
 st.markdown("---")
-st.subheader("🛒 Direktbestellung")
+st.subheader("🛒 Bestellung aufgeben")
 
-name = st.text_input("Name")
+name = st.text_input("Dein Name")
+gericht = st.selectbox("Wähle dein Gericht:", ["Spaghetti Bolognese", "Pizza Margherita", "Veganes Curry", "Caesar Salad"])
+menge = st.number_input("Menge", min_value=1, max_value=20, step=1)
 adresse = st.text_input("Lieferadresse")
-gericht = st.selectbox(
-    "Wähle ein Gericht für nächste Woche:",
-    ["Pasta Basilikum", "Thai Curry", "Quinoa Bowl", "Hähnchen Teriyaki", "Veganer Burger"]
-)
-anzahl = st.number_input("Portionen", min_value=1, max_value=10, step=1)
 
-if st.button("Bestellung abschicken"):
+if st.button("Bestellung absenden"):
     if name and adresse:
-        st.success(f"Bestellung erfolgreich aufgegeben! 🎉\n\n{name}, du erhältst '{gericht}' ({anzahl}x) an '{adresse}'.")
+        st.success(f"Vielen Dank, {name}! Du erhältst {menge}x {gericht} an {adresse}.")
     else:
-        st.error("Bitte Name und Adresse eingeben.")
+        st.error("Bitte gib Name und Adresse ein.")
